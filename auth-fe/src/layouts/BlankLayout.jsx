@@ -1,11 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const BlankLayout = (props) => {
-    return(
-        <div>
-        {props.children}
-        </div>
-    )
-}
+  return <>{props.children}</>;
+};
 
 export default BlankLayout;

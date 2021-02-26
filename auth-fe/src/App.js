@@ -1,12 +1,11 @@
-import logo from './logo.svg';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
-import ReactRouter from './Routes/ReactRouter';
+import logo from "./logo.svg";
+import "./App.css";
+import ReactRouter from "./routes/ReactRouter";
 
 function App() {
   return (
-    <div className="App">
-      <ReactRouter/>
+    <div>
+      <ReactRouter />
     </div>
   );
 }

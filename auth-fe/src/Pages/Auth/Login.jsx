@@ -1,27 +1,30 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import backend from "../../clients/axios";
-import {useHistory} from 'react-router-dom';
-
+import { Link, useHistory } from "react-router-dom";
+import useAuth from "../../hooks/auth";
 const Login = () => {
-  
+  const history = useHistory();
+  const [user, loading] = useAuth();
+  useEffect(() => {
+    if (user) {
+      history.push("/");
+    }
+  }, [loading]);
+
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const handleChange = (e) =>
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  const history = useHistory();
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      try{
-        const {data} = await backend.post("/auth/login", credentials)
-        console.log("data::::", {data})
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("refreshToken", data.refreshToken);
-        //history.push("/");
-        window.location.replace("/");
-      } catch(err){
-          console.log(err)
-      }
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await backend.post("/auth/login", credentials);
+      window.location.replace("/");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div
       style={{
@@ -30,14 +33,21 @@ const Login = () => {
         justifyContent: "center",
         width: "100vw",
         height: "100vh",
+        flexDirection: "column",
       }}
     >
+      <h5 style={{ marginBottom: 50 }}>Login to Users App</h5>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control 
-          name="email" value={credentials.email} onChange={handleChange}
-          type="email" placeholder="Enter email" required />
+          <Form.Control
+            name="email"
+            value={credentials.email}
+            onChange={handleChange}
+            type="email"
+            required
+            placeholder="Enter email"
+          />
           <Form.Text className="text-muted">
             We'll never share your email with anyone else.
           </Form.Text>
@@ -45,16 +55,19 @@ const Login = () => {
 
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control 
-          name="password" value={credentials.password} onChange={handleChange}
-          type="password" placeholder="Password" required />
+          <Form.Control
+            name="password"
+            value={credentials.password}
+            onChange={handleChange}
+            type="password"
+            required
+            placeholder="Password"
+          />
         </Form.Group>
-        <Form.Group controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button block variant="primary" type="submit">
           Submit
         </Button>
+        <Link to={"/auth/register"}>Dont you have an account ? Register </Link>
       </Form>
     </div>
   );

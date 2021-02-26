@@ -6,8 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import routes from "./index";
-//import Protected from "../layouts/Protected";
-
+import Protected from "../layouts/Protected";
 const ReactRouter = () => {
   return (
     <Router>
@@ -19,21 +18,18 @@ const ReactRouter = () => {
             path={route.path}
             render={(props) => (
               <route.layout {...props}>
-                {
-                    <route.component {...props} />
-
-                    /*route.isProtected ? (
+                {route.isProtected ? (
                   <Protected>
                     <route.component {...props} />
                   </Protected>
                 ) : (
                   <route.component {...props} />
-                )*/}
+                )}
               </route.layout>
             )}
           />
         ))}
-        <Redirect to="/" />
+        <Redirect to="/404" />
       </Switch>
     </Router>
   );
